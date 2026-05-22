@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-Hive | Profile Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold tracking-wider text-sky-400">🐝 DEV-HIVE</a>
+        <a href="index.html" class="text-slate-400 hover:text-slate-200">Feed Browser</a>
+    </nav>
+
+    <div class="h-32 bg-gradient-to-r from-sky-600 to-indigo-900"></div>
+
+    <div class="max-w-5xl mx-auto px-6 pb-12">
+        <div class="flex flex-col md:flex-row gap-6 -mt-10 items-start">
+            <div class="w-24 h-24 rounded-2xl bg-amber-500 text-4xl flex items-center justify-center font-bold text-slate-950 border-4 border-slate-900 shadow-xl">👑</div>
+            <div class="pt-12 md:pt-10 flex-1">
+                <h1 class="text-3xl font-bold">@angrishdev</h1>
+                <p class="text-slate-400">Full-Stack Indie Hobbyist & Systems Builder</p>
+                
+                <div class="flex gap-6 mt-4 text-sm text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800 w-fit">
+                    <span>📁 <strong>1</strong> Project Listed</span>
+                    <span>👥 <strong>142</strong> Followers</span>
+                    <span>❤️ <strong>389</strong> Direct Likes</span>
+                </div>
+            </div>
+            
+            <button onclick="toggleCommissionModal()" class="mt-4 md:mt-12 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-5 py-2.5 rounded-lg transition shadow-lg">💼 Order Custom Commission Work</button>
+        </div>
+
+        <hr class="border-slate-800 my-8">
+
+        <h2 class="text-xl font-bold mb-4">My Dashboard Portfolio</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-950 p-5 rounded-xl border border-slate-800">
+                <h3 class="text-lg font-bold text-sky-400">Active Base Framework (Dev-Hive Website)</h3>
+                <p class="text-slate-400 text-sm mt-1">This initial full-stack platform structure deployment. Testing responsiveness layout.</p>
+                <div class="mt-4 text-xs text-slate-500">Published Today</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="commissionModal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden p-4 z-50">
+        <div class="bg-slate-950 border border-slate-800 max-w-md w-full rounded-xl p-6 relative">
+            <h3 class="text-xl font-bold text-slate-100 mb-1">Send a Building Request</h3>
+            <p class="text-slate-400 text-xs mb-4">Describe the scripts, games, or platform extensions you want this creator to construct for you.</p>
+            
+            <form id="commissionForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Your Contact Handle (Discord / Email)</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Task Specification Details</label>
+                    <textarea rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-200" placeholder="I need a customized scoreboard layout module added into my project setup..."></textarea>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="toggleCommissionModal()" class="flex-1 bg-slate-900 hover:bg-slate-850 text-slate-300 py-2 rounded font-medium text-sm border border-slate-800">Cancel</button>
+                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-slate-950 py-2 rounded font-bold text-sm">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleCommissionModal() {
+            const modal = document.getElementById('commissionModal');
+            modal.classList.toggle('hidden');
+        }
+
+        document.getElementById('commissionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Request Sent! The data outline structure will successfully cache to your dashboard entries feed next.');
+            toggleCommissionModal();
+        });
+    </script>
+</body>
+</html>

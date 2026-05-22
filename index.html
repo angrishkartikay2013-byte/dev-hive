@@ -3,83 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev-Hive Deployment Test</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            transition: background 0.3s, color 0.3s;
-        }
-        .container {
-            text-align: center;
-            padding: 2.5rem;
-            background: #1e293b;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-        }
-        .success-icon {
-            font-size: 4rem;
-            color: #22c55e;
-            margin-bottom: 1rem;
-        }
-        h1 {
-            margin: 0 0 0.5rem 0;
-            color: #38bdf8;
-        }
-        p {
-            color: #94a3b8;
-            margin-bottom: 1.5rem;
-        }
-        button {
-            background-color: #38bdf8;
-            color: #0f172a;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        button:hover {
-            transform: scale(1.05);
-        }
-        /* Light mode styles */
-        body.light-mode {
-            background-color: #f1f5f9;
-            color: #0f172a;
-        }
-        body.light-mode .container {
-            background: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 1px solid #e2e8f0;
-        }
-        body.light-mode p {
-            color: #64748b;
-        }
-    </style>
+    <title>Dev-Hive | Creator Showcase Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
 
-    <div class="container">
-        <div class="success-icon">🚀</div>
-        <h1>Dev-Hive is Live!</h1>
-        <p>If you can see this page, your GitHub Pages deployment works perfectly.</p>
-        <button id="toggleBtn">Toggle Light/Dark Mode</button>
-    </div>
+    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl">🐝</span>
+            <span class="text-xl font-bold tracking-wider text-sky-400">DEV-HIVE</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="index.html" class="text-sky-400 font-medium">Feed</a>
+            <a href="upload.html" class="text-slate-400 hover:text-slate-200 font-medium transition">Upload Project</a>
+            <a href="profile.html" class="text-slate-400 hover:text-slate-200 font-medium transition">My Profile</a>
+            <button id="authBtn" onclick="handleAuth()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold px-4 py-2 rounded-lg transition cursor-pointer">Login</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <aside class="lg:col-span-1 bg-slate-950 p-6 rounded-xl border border-slate-800 h-fit">
+            <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider">Categories</h3>
+            <ul class="space-y-2">
+                <li><button class="w-full text-left px-3 py-2 rounded bg-sky-950/50 text-sky-400 font-medium cursor-pointer">🔥 All Projects</button></li>
+                <li><button class="w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🎮 Games</button></li>
+                <li><button class="w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🛠️ Roblox Tools</button></li>
+                <li><button class="w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🌐 Websites / Apps</button></li>
+                <li><button class="w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">📜 Scripts & Utilities</button></li>
+            </ul>
+        </aside>
+
+        <section class="lg:col-span-3">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Trending Creations</h2>
+                <span class="text-sm text-slate-400">Showing verified sandbox links</span>
+            </div>
+
+            <div id="projectFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 bg-slate-800 flex items-center justify-center text-5xl text-slate-600">🎮</div>
+                        <div class="p-5">
+                            <span class="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-sky-950 text-sky-400 rounded">Game</span>
+                            <h3 class="text-xl font-bold mt-2 text-slate-100">Super Neon Runner</h3>
+                            <p class="text-slate-400 text-sm mt-1 line-clamp-2">A high-speed endless runner built using HTML5 canvas. Clean mechanics and source code available.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <div class="pt-4 border-t border-slate-900 flex justify-between items-center text-sm text-slate-400">
+                            <span>By <strong class="text-slate-300 hover:underline cursor-pointer">@lalitdev</strong></span>
+                            <div class="flex gap-3 items-center">
+                                <span><i class="fa-regular fa-heart text-rose-500 mr-1"></i>42</span>
+                                <a href="#" class="text-sky-400 font-bold hover:underline">View →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 bg-slate-800 flex items-center justify-center text-5xl text-slate-600">🛠️</div>
+                        <div class="p-5">
+                            <span class="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-emerald-950 text-emerald-400 rounded">Roblox Tools</span>
+                            <h3 class="text-xl font-bold mt-2 text-slate-100">Auto-Rigging Data Script</h3>
+                            <p class="text-slate-400 text-sm mt-1 line-clamp-2">Optimized Lua script layout designed to expedite rig animations inside custom studios.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <div class="pt-4 border-t border-slate-900 flex justify-between items-center text-sm text-slate-400">
+                            <span>By <strong class="text-slate-300 hover:underline cursor-pointer">@buzzy_builder</strong></span>
+                            <div class="flex gap-3 items-center">
+                                <span><i class="fa-regular fa-heart text-rose-500 mr-1"></i>118</span>
+                                <a href="#" class="text-sky-400 font-bold hover:underline">View →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
 
     <script>
-        const btn = document.getElementById('toggleBtn');
-        btn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-        });
+        // Function to check login status and update the button layout dynamically
+        function updateAuthButton() {
+            const loggedInUser = localStorage.getItem('devHiveUser');
+            const authBtn = document.getElementById('authBtn');
+            
+            if (loggedInUser) {
+                authBtn.innerText = `Logout (${loggedInUser})`;
+                authBtn.classList.remove('bg-sky-500', 'hover:bg-sky-600', 'text-slate-950');
+                authBtn.classList.add('bg-slate-800', 'hover:bg-slate-700', 'text-slate-200');
+            } else {
+                authBtn.innerText = "Login";
+                authBtn.classList.remove('bg-slate-800', 'hover:bg-slate-700', 'text-slate-200');
+                authBtn.classList.add('bg-sky-500', 'hover:bg-sky-600', 'text-slate-950');
+            }
+        }
+
+        // Function to log in or log out directly from the dashboard navbar
+        function handleAuth() {
+            const loggedInUser = localStorage.getItem('devHiveUser');
+            
+            if (loggedInUser) {
+                // Logout flow
+                localStorage.removeItem('devHiveUser');
+                alert('Logged out successfully!');
+                updateAuthButton();
+            } else {
+                // Login flow using a quick prompt shortcut
+                const username = prompt("Enter a temporary username to log into Dev-Hive:");
+                if (username && username.trim() !== "") {
+                    const cleanName = username.trim().toLowerCase();
+                    localStorage.setItem('devHiveUser', '@' + cleanName);
+                    alert(`Welcome to Dev-Hive, @${cleanName}!`);
+                    updateAuthButton();
+                }
+            }
+        }
+
+        // Run verification loop on initial script compilation
+        updateAuthButton();
     </script>
 </body>
 </html>
