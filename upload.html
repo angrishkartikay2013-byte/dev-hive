@@ -1,42 +1,104 @@
-<script>
-    const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-Hive | Publish Work</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
 
-    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        let currentCreator = localStorage.getItem('devHiveUser') || "@guest_creator";
+    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold tracking-wider text-sky-400">🐝 DEV-HIVE</a>
+        <a href="index.html" class="text-slate-400 hover:text-slate-200">← Back to Feed</a>
+    </nav>
 
-        const newProject = {
-            title: document.getElementById('title').value,
-            category: document.getElementById('category').value,
-            description: document.getElementById('description').value,
-            thumbnail: document.getElementById('thumbnail').value || "https://picsum.photos/400/300",
-            project_link: document.getElementById('projectLink').value,
-            username: currentCreator
-        };
+    <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl">
+        <h2 class="text-2xl font-bold mb-2">Publish a Creation</h2>
+        <p class="text-slate-400 text-sm mb-6">Your project config specs will update to the global live pipeline matrix directly.</p>
 
-        // 1. Download the current global array list
-        let currentFeed = [];
-        try {
-            const res = await fetch(GLOBAL_BIN_URL);
-            const data = await res.json();
-            currentFeed = data.value || [];
-        } catch(err) {}
+        <form id="uploadForm" class="space-y-5">
+            <div>
+                <label class="block text-sm font-bold mb-2 text-slate-300">Project Title</label>
+                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+            </div>
 
-        // 2. Append new project file structure to the front of the list
-        currentFeed.unshift(newProject);
+            <div>
+                <label class="block text-sm font-bold mb-2 text-slate-300">Category</label>
+                <select id="category" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+                    <option value="Game">🎮 Game Build</option>
+                    <option value="Roblox Tools">🛠️ Roblox Extension/Tool</option>
+                    <option value="Websites / Apps">🌐 Web App / Script</option>
+                    <option value="Scripts & Utilities">📦 Other Asset</option>
+                </select>
+            </div>
 
-        // 3. Upload the updated master array sheet back up to the public hub
-        try {
-            await fetch(GLOBAL_BIN_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ value: currentFeed })
-            });
-            alert("Success! Your submission is now globally live on the Dev-Hive feed network.");
-            window.location.href = 'index.html';
-        } catch (error) {
-            alert("Error updating shared storage cloud.");
-        }
-    });
-</script>
+            <div>
+                <label class="block text-sm font-bold mb-2 text-slate-300">Project Summary</label>
+                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2 text-slate-300">Thumbnail Image URL</label>
+                <input type="url" id="thumbnail" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="https://picsum.photos/400/300">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link</label>
+                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+            </div>
+
+            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-3 rounded-lg transition duration-200">Publish to Hive Feed</button>
+        </form>
+    </div>
+
+    <script>
+        const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            let currentCreator = localStorage.getItem('devHiveUser') || "@guest_creator";
+
+            const newProject = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                thumbnail: document.getElementById('thumbnail').value || "https://picsum.photos/400/300",
+                project_link: document.getElementById('projectLink').value,
+                username: currentCreator
+            };
+
+            let currentFeed = [];
+            try {
+                const res = await fetch(GLOBAL_BIN_URL);
+                if (res.ok) {
+                    const data = await res.json();
+                    currentFeed = data.value || [];
+                }
+            } catch(err) {
+                console.log("Creating new stream cluster context.");
+            }
+
+            currentFeed.unshift(newProject);
+
+            try {
+                const saveRes = await fetch(GLOBAL_BIN_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ value: currentFeed })
+                });
+                
+                if (saveRes.ok) {
+                    alert("Global Upload Success! Your project is live for everyone.");
+                    window.location.href = 'index.html';
+                } else {
+                    alert("Cloud storage connection rejected.");
+                }
+            } catch (error) {
+                alert("Network error updating live stream dashboard layout.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -49,7 +49,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold">Global Creations Feed</h2>
-                    <p class="text-sm text-slate-400">Live Shared Infrastructure (No Database Needed)</p>
+                    <p class="text-sm text-slate-400">Live Shared Infrastructure</p>
                 </div>
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
@@ -63,10 +63,8 @@
 
     <script>
         let allProjectsCache = [];
-        // Shared open-access bucket key specific to your project namespace
         const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
 
-        // --- Fetch global projects via Open Web Streams ---
         async function fetchProjects() {
             const feedContainer = document.getElementById('projectFeed');
             feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching live global dashboard sync...</p>`;
@@ -77,9 +75,8 @@
                 const result = await response.json();
                 allProjectsCache = result.value || [];
             } catch (e) {
-                // Baseline layout if the shared cloud bucket is brand new
                 allProjectsCache = [
-                    { title: "Super Neon Runner", category: "Game", description: "Global fallback test module.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
+                    { title: "Super Neon Runner", category: "Game", description: "Global fallback baseline layout entry.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
                 ];
             }
             renderCards(allProjectsCache);
