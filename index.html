@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-Hive Deployment Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+        .container {
+            text-align: center;
+            padding: 2.5rem;
+            background: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+        }
+        .success-icon {
+            font-size: 4rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: #38bdf8;
+        }
+        p {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+        button {
+            background-color: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        /* Light mode styles */
+        body.light-mode {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        body.light-mode .container {
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        body.light-mode p {
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="success-icon">🚀</div>
+        <h1>Dev-Hive is Live!</h1>
+        <p>If you can see this page, your GitHub Pages deployment works perfectly.</p>
+        <button id="toggleBtn">Toggle Light/Dark Mode</button>
+    </div>
+
+    <script>
+        const btn = document.getElementById('toggleBtn');
+        btn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+        });
+    </script>
+</body>
+</html>
