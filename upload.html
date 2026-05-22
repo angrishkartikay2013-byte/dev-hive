@@ -1,63 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev-Hive | Publish Work</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen">
+<script>
+    const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
 
-    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
-        <a href="index.html" class="text-xl font-bold tracking-wider text-sky-400">🐝 DEV-HIVE</a>
-        <a href="index.html" class="text-slate-400 hover:text-slate-200">← Back to Feed</a>
-    </nav>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        let currentCreator = localStorage.getItem('devHiveUser') || "@guest_creator";
 
-    <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl">
-        <h2 class="text-2xl font-bold mb-2">Publish a Creation</h2>
-        <p class="text-slate-400 text-sm mb-6">Showcase screenshots and documentation. Direct executable file uploads are disabled for system integrity; please link verifiable GitHub repositories or hosted drive builds instead.</p>
+        const newProject = {
+            title: document.getElementById('title').value,
+            category: document.getElementById('category').value,
+            description: document.getElementById('description').value,
+            thumbnail: document.getElementById('thumbnail').value || "https://picsum.photos/400/300",
+            project_link: document.getElementById('projectLink').value,
+            username: currentCreator
+        };
 
-        <form id="uploadForm" class="space-y-5">
-            <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">Project Title</label>
-                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="e.g. Cyberpunk Interface Asset Pack">
-            </div>
+        // 1. Download the current global array list
+        let currentFeed = [];
+        try {
+            const res = await fetch(GLOBAL_BIN_URL);
+            const data = await res.json();
+            currentFeed = data.value || [];
+        } catch(err) {}
 
-            <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">Category</label>
-                <select id="category" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
-                    <option value="games">🎮 Game Build</option>
-                    <option value="roblox">🛠️ Roblox Extension/Tool</option>
-                    <option value="web">🌐 Web App / Script</option>
-                    <option value="other">📦 Other Asset</option>
-                </select>
-            </div>
+        // 2. Append new project file structure to the front of the list
+        currentFeed.unshift(newProject);
 
-            <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">Project Summary & Description</label>
-                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="Explain what your project does, how to use it, or what layout formats it supports..."></textarea>
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">Thumbnail Image URL</label>
-                <input type="url" id="thumbnail" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="https://imgur.com/your-screenshot-link.png">
-            </div>
-
-            <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link (Safe URL Only)</label>
-                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="https://github.com/yourname/project">
-            </div>
-
-            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-3 rounded-lg transition duration-200">Publish to Hive Feed</button>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('MVP Mode: Structure is successfully linked! Next, we will connect your Supabase database string to record posts permanently.');
+        // 3. Upload the updated master array sheet back up to the public hub
+        try {
+            await fetch(GLOBAL_BIN_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ value: currentFeed })
+            });
+            alert("Success! Your submission is now globally live on the Dev-Hive feed network.");
             window.location.href = 'index.html';
-        });
-    </script>
-</body>
-</html>
+        } catch (error) {
+            alert("Error updating shared storage cloud.");
+        }
+    });
+</script>

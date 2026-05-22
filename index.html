@@ -3,49 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev-Hive | Creator Showcase Platform</title>
+    <title>Dev-Hive | Global Creator Showcase</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* Smooth transitions for theme switching */
-        body, nav, aside, .project-card, button, input {
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
-        
-        /* Light mode color adjustments */
-        body.light-mode {
-            background-color: #f1f5f9;
-            color: #0f172a;
-        }
-        body.light-mode nav, 
-        body.light-mode aside, 
-        body.light-mode .project-card {
-            background-color: #ffffff;
-            border-color: #e2e8f0;
-        }
-        body.light-mode h2, body.light-mode h3, body.light-mode h1 {
-            color: #0f172a;
-        }
-        body.light-mode p {
-            color: #475569;
-        }
-        body.light-mode .category-btn {
-            color: #475569;
-        }
-        body.light-mode .category-btn:hover {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-        body.light-mode .active-cat {
-            background-color: #e0f2fe;
-            color: #0369a1;
-        }
-        body.light-mode #searchBar {
-            background-color: #ffffff;
-            border-color: #cbd5e1;
-            color: #0f172a;
-        }
+        body, nav, aside, .project-card, button, input { transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+        body.light-mode { background-color: #f1f5f9; color: #0f172a; }
+        body.light-mode nav, body.light-mode aside, body.light-mode .project-card { background-color: #ffffff; border-color: #e2e8f0; }
+        body.light-mode h2, body.light-mode h3, body.light-mode h1 { color: #0f172a; }
+        body.light-mode p, body.light-mode .category-btn { color: #475569; }
+        body.light-mode .category-btn:hover { background-color: #f8fafc; color: #0f172a; }
+        body.light-mode .active-cat { background-color: #e0f2fe; color: #0369a1; }
+        body.light-mode #searchBar { background-color: #ffffff; border-color: #cbd5e1; color: #0f172a; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
@@ -59,20 +28,15 @@
             <a href="index.html" class="text-sky-400 font-medium">Feed</a>
             <a href="upload.html" class="text-slate-400 hover:text-slate-200 font-medium transition">Upload Project</a>
             <a href="profile.html" class="text-slate-400 hover:text-slate-200 font-medium transition">My Profile</a>
-            
-            <button id="themeToggleBtn" onclick="toggleTheme()" class="text-slate-400 hover:text-slate-200 cursor-pointer p-2 text-lg">
-                <i class="fa-solid fa-moon"></i>
-            </button>
-
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="text-slate-400 hover:text-slate-200 cursor-pointer p-2 text-lg"><i class="fa-solid fa-moon"></i></button>
             <button id="authBtn" onclick="handleAuth()" class="bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold px-4 py-2 rounded-lg transition cursor-pointer">Login</button>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
         <aside class="lg:col-span-1 bg-slate-950 p-6 rounded-xl border border-slate-800 h-fit">
             <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider">Categories</h3>
-            <ul class="space-y-2" id="categoryList">
+            <ul class="space-y-2">
                 <li><button onclick="filterCategory(this, null)" class="category-btn active-cat w-full text-left px-3 py-2 rounded bg-sky-950/50 text-sky-400 font-medium cursor-pointer">🔥 All Projects</button></li>
                 <li><button onclick="filterCategory(this, 'Game')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🎮 Games</button></li>
                 <li><button onclick="filterCategory(this, 'Roblox Tools')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🛠️ Roblox Tools</button></li>
@@ -84,57 +48,50 @@
         <section class="lg:col-span-3">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold">Trending Creations</h2>
-                    <p class="text-sm text-slate-400">Live cloud database stream cluster</p>
+                    <h2 class="text-2xl font-bold">Global Creations Feed</h2>
+                    <p class="text-sm text-slate-400">Live Shared Infrastructure (No Database Needed)</p>
                 </div>
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
-                    <input type="text" id="searchBar" onkeyup="handleSearch()" placeholder="Search project titles..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
+                    <input type="text" id="searchBar" onkeyup="handleSearch()" placeholder="Search global projects..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
                 </div>
             </div>
 
-            <div id="projectFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                </div>
+            <div id="projectFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </section>
     </main>
 
     <script>
-        // --- PASTE YOUR EXACT SUPABASE CREDENTIALS HERE ---
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_PUBLIC_KEY";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let allProjectsCache = [];
+        // Shared open-access bucket key specific to your project namespace
+        const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
 
-        let allProjectsCache = []; // Stores loaded database content for localized filtering
-
-        // --- Fetch projects from Supabase Database ---
+        // --- Fetch global projects via Open Web Streams ---
         async function fetchProjects() {
             const feedContainer = document.getElementById('projectFeed');
-            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Streaming data from hive...</p>`;
+            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching live global dashboard sync...</p>`;
 
-            const { data, error } = await supabase
-                .from('projects')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
-            if (error) {
-                feedContainer.innerHTML = `<p class='text-rose-500 col-span-2 text-center py-12'>Failed to stream database: ${error.message}</p>`;
-                return;
+            try {
+                const response = await fetch(GLOBAL_BIN_URL);
+                if (!response.ok) throw new Error();
+                const result = await response.json();
+                allProjectsCache = result.value || [];
+            } catch (e) {
+                // Baseline layout if the shared cloud bucket is brand new
+                allProjectsCache = [
+                    { title: "Super Neon Runner", category: "Game", description: "Global fallback test module.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
+                ];
             }
-
-            allProjectsCache = data;
             renderCards(allProjectsCache);
         }
 
-        // --- Render Cards to Screen Layout ---
         function renderCards(projectArray) {
             const feedContainer = document.getElementById('projectFeed');
             feedContainer.innerHTML = ""; 
-
             if (projectArray.length === 0) {
-                feedContainer.innerHTML = `<p class='text-slate-500 col-span-2 text-center py-12'>No matching creations found in the feed stream.</p>`;
+                feedContainer.innerHTML = `<p class='text-slate-500 col-span-2 text-center py-12'>No projects active right now.</p>`;
                 return;
             }
-
             projectArray.forEach(project => {
                 feedContainer.innerHTML += `
                     <div class="project-card bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
@@ -157,36 +114,18 @@
             });
         }
 
-        // --- Filter Categories Automations ---
         function filterCategory(element, categoryName) {
-            // Reset active style flags on navigation buttons
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active-cat', 'bg-sky-950/50', 'text-sky-400');
-                btn.classList.add('text-slate-400');
-            });
-
-            // Set clicked button to active state styling layouts
-            element.classList.add('active-cat', 'bg-sky-950/50', 'text-sky-400');
-
-            if (!categoryName) {
-                renderCards(allProjectsCache); // Show everything
-            } else {
-                const filtered = allProjectsCache.filter(p => p.category === categoryName);
-                renderCards(filtered);
-            }
+            document.querySelectorAll('.category-btn').forEach(btn => btn.className = "category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer");
+            element.className = "category-btn active-cat w-full text-left px-3 py-2 rounded bg-sky-950/50 text-sky-400 font-medium cursor-pointer";
+            if (!categoryName) renderCards(allProjectsCache);
+            else renderCards(allProjectsCache.filter(p => p.category === categoryName));
         }
 
-        // --- Search Bar Input Handling ---
         function handleSearch() {
-            const searchKeyword = document.getElementById('searchBar').value.toLowerCase().trim();
-            const filteredResults = allProjectsCache.filter(p => 
-                p.title.toLowerCase().includes(searchKeyword) || 
-                p.description.toLowerCase().includes(searchKeyword)
-            );
-            renderCards(filteredResults);
+            const kw = document.getElementById('searchBar').value.toLowerCase().trim();
+            renderCards(allProjectsCache.filter(p => p.title.toLowerCase().includes(kw) || p.description.toLowerCase().includes(kw)));
         }
 
-        // --- Theme Switch Engine ---
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
@@ -194,36 +133,25 @@
             localStorage.setItem('devHiveTheme', isLight ? 'light' : 'dark');
         }
 
-        // --- Simulated Auth System ---
         function updateAuthButton() {
             const user = localStorage.getItem('devHiveUser');
             const btn = document.getElementById('authBtn');
-            if (user) {
-                btn.innerText = `Logout (${user})`;
-                btn.className = "bg-slate-800 text-slate-200 font-bold px-4 py-2 rounded-lg cursor-pointer transition";
-            } else {
-                btn.innerText = "Login";
-                btn.className = "bg-sky-500 text-slate-950 font-bold px-4 py-2 rounded-lg cursor-pointer transition";
-            }
+            btn.innerText = user ? `Logout (${user})` : "Login";
+            btn.className = user ? "bg-slate-800 text-slate-200 font-bold px-4 py-2 rounded-lg cursor-pointer text-sm" : "bg-sky-500 text-slate-950 font-bold px-4 py-2 rounded-lg cursor-pointer text-sm";
         }
 
         function handleAuth() {
-            if (localStorage.getItem('devHiveUser')) {
-                localStorage.removeItem('devHiveUser');
-                alert('Logged out from active project cluster profile!');
-            } else {
+            if (localStorage.getItem('devHiveUser')) localStorage.removeItem('devHiveUser');
+            else {
                 const name = prompt("Enter temporary username:");
-                if (name && name.trim()) {
-                    localStorage.setItem('devHiveUser', '@' + name.trim().toLowerCase());
-                }
+                if (name && name.trim()) localStorage.setItem('devHiveUser', '@' + name.trim().toLowerCase());
             }
             updateAuthButton();
         }
 
-        // --- Initial Boot Initialization Loop ---
         if (localStorage.getItem('devHiveTheme') === 'light') toggleTheme();
         updateAuthButton();
-        fetchProjects(); // Query database live tables on system execution launch
+        fetchProjects();
     </script>
 </body>
 </html>
