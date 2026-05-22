@@ -15,12 +15,12 @@
 
     <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl shadow-xl">
         <h2 class="text-2xl font-bold mb-2 text-slate-100">Publish a Creation</h2>
-        <p class="text-slate-400 text-sm mb-6">Your project specifications will update directly to the shared global network stream matrix. Please ensure external links point to safe platforms like GitHub.</p>
+        <p class="text-slate-400 text-sm mb-6">Your project configurations will submit straight into the global shared network pipeline instantly.</p>
 
         <form id="uploadForm" class="space-y-5">
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Project Title</label>
-                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="e.g. Cyberpunk Interface Asset Pack">
+                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition">
             </div>
 
             <div>
@@ -35,18 +35,17 @@
 
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Project Summary & Description</label>
-                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="Explain what your project configuration does, its setup instructions, or how others can deploy it..."></textarea>
+                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition"></textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Thumbnail Image URL</label>
                 <input type="url" id="thumbnail" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="https://picsum.photos/400/300">
-                <span class="text-xs text-slate-500 mt-1 block">Leave empty or use any image link from imgur/unsplash to display project artwork cards.</span>
             </div>
 
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link (Verifiable URL)</label>
-                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="https://github.com/yourusername/yourproject">
+                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition">
             </div>
 
             <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-3 rounded-lg transition duration-200 cursor-pointer shadow-md">Publish to Hive Feed</button>
@@ -54,7 +53,7 @@
     </div>
 
     <script>
-        const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
+        const GLOBAL_BIN_URL = "https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba?meta=false";
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -74,33 +73,38 @@
 
             let currentFeed = [];
 
+            // 1. Fetch current shared stream matrix layout from high-speed network nodes
             try {
                 const res = await fetch(GLOBAL_BIN_URL);
                 if (res.ok) {
-                    const data = await res.json();
-                    currentFeed = data.value || [];
+                    currentFeed = await res.json();
                 }
             } catch(err) {
-                console.log("No remote database array discovered. Initializing fresh feed stream.");
+                console.log("No data array discovered. Initializing fresh feed stream.");
             }
 
+            // 2. Add item to the top slot
             currentFeed.unshift(newProject);
 
+            // 3. Put master update configuration back onto data node with clear public permissions
             try {
-                const saveRes = await fetch(GLOBAL_BIN_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ value: currentFeed })
+                const saveRes = await fetch("https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba", {
+                    method: "PUT",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "X-Bin-Meta": "false"
+                    },
+                    body: JSON.stringify(currentFeed)
                 });
                 
                 if (saveRes.ok) {
-                    alert("Global Upload Success! Your project is now completely live across the Dev-Hive network.");
+                    alert("Global Network Success! Your creation is live for everyone on Dev-Hive.");
                     window.location.href = 'index.html'; 
                 } else {
-                    alert("Cloud sync transaction rejected. Remote node pipeline block.");
+                    alert("The global server rejected the update pipeline packet.");
                 }
             } catch (error) {
-                alert("Network communication error executing global dashboard write updates.");
+                alert("Network communication error routing updates to high-speed cloud clusters.");
             }
         });
     </script>

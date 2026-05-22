@@ -49,7 +49,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold">Global Creations Feed</h2>
-                    <p class="text-sm text-slate-400">Live Shared Infrastructure</p>
+                    <p class="text-sm text-slate-400">Live Fast-Track Cloud Stream</p>
                 </div>
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
@@ -63,20 +63,20 @@
 
     <script>
         let allProjectsCache = [];
-        const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
+        // Updated to a robust, high-performance master feed channel URL
+        const GLOBAL_BIN_URL = "https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba?meta=false";
 
         async function fetchProjects() {
             const feedContainer = document.getElementById('projectFeed');
-            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching live global dashboard sync...</p>`;
+            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Syncing live network feed...</p>`;
 
             try {
                 const response = await fetch(GLOBAL_BIN_URL);
                 if (!response.ok) throw new Error();
-                const result = await response.json();
-                allProjectsCache = result.value || [];
+                allProjectsCache = await response.json();
             } catch (e) {
                 allProjectsCache = [
-                    { title: "Super Neon Runner", category: "Game", description: "Global fallback baseline layout entry.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
+                    { title: "Super Neon Runner", category: "Game", description: "Global fallback test module.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
                 ];
             }
             renderCards(allProjectsCache);
