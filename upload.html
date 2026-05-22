@@ -54,20 +54,15 @@
     </div>
 
     <script>
-        // Shared public data vector endpoint target stream link
         const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Extract the user identity stored during localized session check
             let currentCreator = localStorage.getItem('devHiveUser') || "@guest_creator";
-
-            // Fallback default placeholder thumbnail image array if input box was skipped
             const inputThumbnail = document.getElementById('thumbnail').value.trim();
             const fallbackThumbnail = inputThumbnail || "https://picsum.photos/400/300";
 
-            // Compile clean data structure matrix object
             const newProject = {
                 title: document.getElementById('title').value.trim(),
                 category: document.getElementById('category').value,
@@ -79,7 +74,6 @@
 
             let currentFeed = [];
 
-            // 1. Fetch current global feed snapshot cluster from the cloud storage link
             try {
                 const res = await fetch(GLOBAL_BIN_URL);
                 if (res.ok) {
@@ -90,10 +84,8 @@
                 console.log("No remote database array discovered. Initializing fresh feed stream.");
             }
 
-            // 2. Unshift the compiled structural project object straight into the top slot
             currentFeed.unshift(newProject);
 
-            // 3. Post updated project sheet array block back up onto the web endpoint matrix
             try {
                 const saveRes = await fetch(GLOBAL_BIN_URL, {
                     method: "POST",
@@ -102,13 +94,13 @@
                 });
                 
                 if (saveRes.ok) {
-                    alert("Global Upload Success! Your project is now completely live across the Dev-Hive cluster network.");
-                    window.location.href = 'index.html'; // Redirect to home feed window smoothly
+                    alert("Global Upload Success! Your project is now completely live across the Dev-Hive network.");
+                    window.location.href = 'index.html'; 
                 } else {
                     alert("Cloud sync transaction rejected. Remote node pipeline block.");
                 }
             } catch (error) {
-                alert("Network communication timeout error executing global dashboard write updates.");
+                alert("Network communication error executing global dashboard write updates.");
             }
         });
     </script>
