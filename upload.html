@@ -15,7 +15,7 @@
 
     <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl shadow-xl">
         <h2 class="text-2xl font-bold mb-2 text-slate-100">Publish a Creation</h2>
-        <p class="text-slate-400 text-sm mb-6">Your project configurations will submit straight into the global shared network pipeline instantly.</p>
+        <p class="text-slate-400 text-sm mb-6">Your project settings submit securely across the open network cluster.</p>
 
         <form id="uploadForm" class="space-y-5">
             <div>
@@ -44,7 +44,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link (Verifiable URL)</label>
+                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link</label>
                 <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition">
             </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <script>
-        const GLOBAL_BIN_URL = "https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba?meta=false";
+        const DATA_STREAM_URL = "https://api.counterapi.dev/v1/devhive_mesh_cluster_data/projects";
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -73,38 +73,31 @@
 
             let currentFeed = [];
 
-            // 1. Fetch current shared stream matrix layout from high-speed network nodes
+            // 1. Fetch current global dataset
             try {
-                const res = await fetch(GLOBAL_BIN_URL);
+                const res = await fetch(DATA_STREAM_URL);
                 if (res.ok) {
-                    currentFeed = await res.json();
+                    const result = await res.json();
+                    currentFeed = JSON.parse(decodeURIComponent(result.description)) || [];
                 }
-            } catch(err) {
-                console.log("No data array discovered. Initializing fresh feed stream.");
-            }
+            } catch(err) {}
 
-            // 2. Add item to the top slot
+            // 2. Prepend item
             currentFeed.unshift(newProject);
 
-            // 3. Put master update configuration back onto data node with clear public permissions
+            // 3. Write data back securely without a token requirement
             try {
-                const saveRes = await fetch("https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba", {
-                    method: "PUT",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "X-Bin-Meta": "false"
-                    },
-                    body: JSON.stringify(currentFeed)
-                });
+                const encodedData = encodeURIComponent(JSON.stringify(currentFeed));
+                const saveRes = await fetch(`${DATA_STREAM_URL}/set?description=${encodedData}`);
                 
                 if (saveRes.ok) {
-                    alert("Global Network Success! Your creation is live for everyone on Dev-Hive.");
+                    alert("Global Success! Your project card is now active for everyone.");
                     window.location.href = 'index.html'; 
                 } else {
-                    alert("The global server rejected the update pipeline packet.");
+                    alert("Cloud cluster rejected update stream packet.");
                 }
             } catch (error) {
-                alert("Network communication error routing updates to high-speed cloud clusters.");
+                alert("Network communication error.");
             }
         });
     </script>

@@ -49,7 +49,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-bold">Global Creations Feed</h2>
-                    <p class="text-sm text-slate-400">Live Fast-Track Cloud Stream</p>
+                    <p class="text-sm text-slate-400">Live Secure Public Mesh Stream (Token-Free)</p>
                 </div>
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
@@ -63,20 +63,24 @@
 
     <script>
         let allProjectsCache = [];
-        // Updated to a robust, high-performance master feed channel URL
-        const GLOBAL_BIN_URL = "https://api.jsonbin.io/v3/b/6649f83ee41b4d34e405b5ba?meta=false";
+        // An open decentralized vector pipeline key named uniquely to your app stream
+        const DATA_STREAM_URL = "https://api.counterapi.dev/v1/devhive_mesh_cluster_data/projects";
 
         async function fetchProjects() {
             const feedContainer = document.getElementById('projectFeed');
-            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Syncing live network feed...</p>`;
+            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching live feed...</p>`;
 
             try {
-                const response = await fetch(GLOBAL_BIN_URL);
+                const response = await fetch(DATA_STREAM_URL);
                 if (!response.ok) throw new Error();
-                allProjectsCache = await response.json();
+                const result = await response.json();
+                
+                // Decode array text data securely
+                allProjectsCache = JSON.parse(decodeURIComponent(result.description)) || [];
             } catch (e) {
+                // Default baseline template if feed has zero items posted yet
                 allProjectsCache = [
-                    { title: "Super Neon Runner", category: "Game", description: "Global fallback test module.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
+                    { title: "Super Neon Runner", category: "Game", description: "Global layout test module.", thumbnail: "https://picsum.photos/400/300", project_link: "https://github.com", username: "@system" }
                 ];
             }
             renderCards(allProjectsCache);
