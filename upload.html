@@ -15,7 +15,7 @@
 
     <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl shadow-xl">
         <h2 class="text-2xl font-bold mb-2 text-slate-100">Publish a Creation</h2>
-        <p class="text-slate-400 text-sm mb-6">Your project settings submit securely across the open network cluster.</p>
+        <p class="text-slate-400 text-sm mb-6">Your project specifications submit instantly over the free global stream grid.</p>
 
         <form id="uploadForm" class="space-y-5">
             <div>
@@ -53,7 +53,7 @@
     </div>
 
     <script>
-        const DATA_STREAM_URL = "https://api.counterapi.dev/v1/devhive_mesh_cluster_data/projects";
+        const DATA_STREAM_URL = "https://api.vpaste.net/v1/bins/devhive_shared_feed_mesh";
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -73,31 +73,34 @@
 
             let currentFeed = [];
 
-            // 1. Fetch current global dataset
+            // 1. Fetch existing feed stream array cleanly
             try {
                 const res = await fetch(DATA_STREAM_URL);
                 if (res.ok) {
                     const result = await res.json();
-                    currentFeed = JSON.parse(decodeURIComponent(result.description)) || [];
+                    currentFeed = result.content || [];
                 }
             } catch(err) {}
 
-            // 2. Prepend item
+            // 2. Unshift the compiled object card to the top spot
             currentFeed.unshift(newProject);
 
-            // 3. Write data back securely without a token requirement
+            // 3. Post updated array back down onto the high-headroom open pipeline 
             try {
-                const encodedData = encodeURIComponent(JSON.stringify(currentFeed));
-                const saveRes = await fetch(`${DATA_STREAM_URL}/set?description=${encodedData}`);
+                const saveRes = await fetch(DATA_STREAM_URL, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: currentFeed })
+                });
                 
                 if (saveRes.ok) {
-                    alert("Global Success! Your project card is now active for everyone.");
+                    alert("Global Upload Success! Your project card is instantly online for everyone.");
                     window.location.href = 'index.html'; 
                 } else {
-                    alert("Cloud cluster rejected update stream packet.");
+                    alert("Server packet limit mismatch.");
                 }
             } catch (error) {
-                alert("Network communication error.");
+                alert("Network communication timeout.");
             }
         });
     </script>
