@@ -6,6 +6,7 @@
     <title>Dev-Hive | Creator Showcase Platform</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* Smooth transitions for theme switching */
         body, nav, aside, .project-card, button, input {
@@ -40,6 +41,11 @@
             background-color: #e0f2fe;
             color: #0369a1;
         }
+        body.light-mode #searchBar {
+            background-color: #ffffff;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
@@ -66,130 +72,158 @@
         
         <aside class="lg:col-span-1 bg-slate-950 p-6 rounded-xl border border-slate-800 h-fit">
             <h3 class="text-sm font-bold mb-4 text-slate-400 uppercase tracking-wider">Categories</h3>
-            <ul class="space-y-2">
-                <li><button class="category-btn active-cat w-full text-left px-3 py-2 rounded bg-sky-950/50 text-sky-400 font-medium cursor-pointer">🔥 All Projects</button></li>
-                <li><button class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🎮 Games</button></li>
-                <li><button class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🛠️ Roblox Tools</button></li>
-                <li><button class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🌐 Websites / Apps</button></li>
-                <li><button class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">📜 Scripts & Utilities</button></li>
+            <ul class="space-y-2" id="categoryList">
+                <li><button onclick="filterCategory(this, null)" class="category-btn active-cat w-full text-left px-3 py-2 rounded bg-sky-950/50 text-sky-400 font-medium cursor-pointer">🔥 All Projects</button></li>
+                <li><button onclick="filterCategory(this, 'Game')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🎮 Games</button></li>
+                <li><button onclick="filterCategory(this, 'Roblox Tools')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🛠️ Roblox Tools</button></li>
+                <li><button onclick="filterCategory(this, 'Websites / Apps')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">🌐 Websites / Apps</button></li>
+                <li><button onclick="filterCategory(this, 'Scripts & Utilities')" class="category-btn w-full text-left px-3 py-2 rounded text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition cursor-pointer">📜 Scripts & Utilities</button></li>
             </ul>
         </aside>
 
         <section class="lg:col-span-3">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Trending Creations</h2>
-                <span class="text-sm text-slate-400">Showing verified sandbox links</span>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold">Trending Creations</h2>
+                    <p class="text-sm text-slate-400">Live cloud database stream cluster</p>
+                </div>
+                <div class="relative w-full md:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
+                    <input type="text" id="searchBar" onkeyup="handleSearch()" placeholder="Search project titles..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
+                </div>
             </div>
 
             <div id="projectFeed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <div class="project-card bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-slate-800 flex items-center justify-center text-5xl text-slate-600">🎮</div>
-                        <div class="p-5">
-                            <span class="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-sky-950 text-sky-400 rounded">Game</span>
-                            <h3 class="text-xl font-bold mt-2 text-slate-100">Super Neon Runner</h3>
-                            <p class="text-slate-400 text-sm mt-1 line-clamp-2">A high-speed endless runner built using HTML5 canvas. Clean mechanics and source code available.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0">
-                        <div class="pt-4 border-t border-slate-900 flex justify-between items-center text-sm text-slate-400">
-                            <span>By <strong class="text-slate-500 hover:underline cursor-pointer">@lalitdev</strong></span>
-                            <div class="flex gap-3 items-center">
-                                <span><i class="fa-regular fa-heart text-rose-500 mr-1"></i>42</span>
-                                <a href="#" class="text-sky-400 font-bold hover:underline">View →</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="project-card bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-slate-800 flex items-center justify-center text-5xl text-slate-600">🛠️</div>
-                        <div class="p-5">
-                            <span class="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-emerald-950 text-emerald-400 rounded">Roblox Tools</span>
-                            <h3 class="text-xl font-bold mt-2 text-slate-100">Auto-Rigging Data Script</h3>
-                            <p class="text-slate-400 text-sm mt-1 line-clamp-2">Optimized Lua script layout designed to expedite rig animations inside custom studios.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0">
-                        <div class="pt-4 border-t border-slate-900 flex justify-between items-center text-sm text-slate-400">
-                            <span>By <strong class="text-slate-500 hover:underline cursor-pointer">@buzzy_builder</strong></span>
-                            <div class="flex gap-3 items-center">
-                                <span><i class="fa-regular fa-heart text-rose-500 mr-1"></i>118</span>
-                                <a href="#" class="text-sky-400 font-bold hover:underline">View →</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </section>
     </main>
 
     <script>
-        // --- Theme Engine ---
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.querySelector('#themeToggleBtn i');
+        // --- PASTE YOUR EXACT SUPABASE CREDENTIALS HERE ---
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_PUBLIC_KEY";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let allProjectsCache = []; // Stores loaded database content for localized filtering
+
+        // --- Fetch projects from Supabase Database ---
+        async function fetchProjects() {
+            const feedContainer = document.getElementById('projectFeed');
+            feedContainer.innerHTML = `<p class='text-slate-400 col-span-2 text-center py-12'><i class="fa-solid fa-spinner fa-spin mr-2"></i> Streaming data from hive...</p>`;
+
+            const { data, error } = await supabase
+                .from('projects')
+                .select('*')
+                .order('created_at', { ascending: false });
             
-            body.classList.toggle('light-mode');
-            
-            if (body.classList.contains('light-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-                localStorage.setItem('devHiveTheme', 'light');
+            if (error) {
+                feedContainer.innerHTML = `<p class='text-rose-500 col-span-2 text-center py-12'>Failed to stream database: ${error.message}</p>`;
+                return;
+            }
+
+            allProjectsCache = data;
+            renderCards(allProjectsCache);
+        }
+
+        // --- Render Cards to Screen Layout ---
+        function renderCards(projectArray) {
+            const feedContainer = document.getElementById('projectFeed');
+            feedContainer.innerHTML = ""; 
+
+            if (projectArray.length === 0) {
+                feedContainer.innerHTML = `<p class='text-slate-500 col-span-2 text-center py-12'>No matching creations found in the feed stream.</p>`;
+                return;
+            }
+
+            projectArray.forEach(project => {
+                feedContainer.innerHTML += `
+                    <div class="project-card bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hover:border-sky-500/50 transition duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="h-48 bg-slate-800 bg-cover bg-center" style="background-image: url('${project.thumbnail}')"></div>
+                            <div class="p-5">
+                                <span class="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-sky-950 text-sky-400 rounded">${project.category}</span>
+                                <h3 class="text-xl font-bold mt-2 text-slate-100">${project.title}</h3>
+                                <p class="text-slate-400 text-sm mt-1 line-clamp-2">${project.description}</p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <div class="pt-4 border-t border-slate-900 flex justify-between items-center text-sm text-slate-400">
+                                <span>By <strong class="text-slate-300">${project.username}</strong></span>
+                                <a href="${project.project_link}" target="_blank" class="text-sky-400 font-bold hover:underline">View Source →</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- Filter Categories Automations ---
+        function filterCategory(element, categoryName) {
+            // Reset active style flags on navigation buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active-cat', 'bg-sky-950/50', 'text-sky-400');
+                btn.classList.add('text-slate-400');
+            });
+
+            // Set clicked button to active state styling layouts
+            element.classList.add('active-cat', 'bg-sky-950/50', 'text-sky-400');
+
+            if (!categoryName) {
+                renderCards(allProjectsCache); // Show everything
             } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-                localStorage.setItem('devHiveTheme', 'dark');
+                const filtered = allProjectsCache.filter(p => p.category === categoryName);
+                renderCards(filtered);
             }
         }
 
-        // Apply saved theme preference on page boot
-        if (localStorage.getItem('devHiveTheme') === 'light') {
-            document.body.classList.add('light-mode');
-            const icon = document.querySelector('#themeToggleBtn i');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
+        // --- Search Bar Input Handling ---
+        function handleSearch() {
+            const searchKeyword = document.getElementById('searchBar').value.toLowerCase().trim();
+            const filteredResults = allProjectsCache.filter(p => 
+                p.title.toLowerCase().includes(searchKeyword) || 
+                p.description.toLowerCase().includes(searchKeyword)
+            );
+            renderCards(filteredResults);
         }
 
-        // --- Mock Authentication Engine ---
+        // --- Theme Switch Engine ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            document.querySelector('#themeToggleBtn i').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem('devHiveTheme', isLight ? 'light' : 'dark');
+        }
+
+        // --- Simulated Auth System ---
         function updateAuthButton() {
-            const loggedInUser = localStorage.getItem('devHiveUser');
-            const authBtn = document.getElementById('authBtn');
-            
-            if (loggedInUser) {
-                authBtn.innerText = `Logout (${loggedInUser})`;
-                authBtn.classList.remove('bg-sky-500', 'hover:bg-sky-600', 'text-slate-950');
-                authBtn.classList.add('bg-slate-800', 'hover:bg-slate-700', 'text-slate-200');
+            const user = localStorage.getItem('devHiveUser');
+            const btn = document.getElementById('authBtn');
+            if (user) {
+                btn.innerText = `Logout (${user})`;
+                btn.className = "bg-slate-800 text-slate-200 font-bold px-4 py-2 rounded-lg cursor-pointer transition";
             } else {
-                authBtn.innerText = "Login";
-                authBtn.classList.remove('bg-slate-800', 'hover:bg-slate-700', 'text-slate-200');
-                authBtn.classList.add('bg-sky-500', 'hover:bg-sky-600', 'text-slate-950');
+                btn.innerText = "Login";
+                btn.className = "bg-sky-500 text-slate-950 font-bold px-4 py-2 rounded-lg cursor-pointer transition";
             }
         }
 
         function handleAuth() {
-            const loggedInUser = localStorage.getItem('devHiveUser');
-            
-            if (loggedInUser) {
+            if (localStorage.getItem('devHiveUser')) {
                 localStorage.removeItem('devHiveUser');
-                alert('Logged out successfully!');
-                updateAuthButton();
+                alert('Logged out from active project cluster profile!');
             } else {
-                const username = prompt("Enter a temporary username to log into Dev-Hive:");
-                if (username && username.trim() !== "") {
-                    const cleanName = username.trim().toLowerCase();
-                    localStorage.setItem('devHiveUser', '@' + cleanName);
-                    alert(`Welcome to Dev-Hive, @${cleanName}!`);
-                    updateAuthButton();
+                const name = prompt("Enter temporary username:");
+                if (name && name.trim()) {
+                    localStorage.setItem('devHiveUser', '@' + name.trim().toLowerCase());
                 }
             }
+            updateAuthButton();
         }
 
-        // Run verification loop on initial script compile
+        // --- Initial Boot Initialization Loop ---
+        if (localStorage.getItem('devHiveTheme') === 'light') toggleTheme();
         updateAuthButton();
+        fetchProjects(); // Query database live tables on system execution launch
     </script>
 </body>
 </html>
