@@ -6,70 +6,80 @@
     <title>Dev-Hive | Publish Work</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen">
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
 
     <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
         <a href="index.html" class="text-xl font-bold tracking-wider text-sky-400">🐝 DEV-HIVE</a>
-        <a href="index.html" class="text-slate-400 hover:text-slate-200">← Back to Feed</a>
+        <a href="index.html" class="text-slate-400 hover:text-slate-200 transition font-medium">← Back to Feed</a>
     </nav>
 
-    <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl">
-        <h2 class="text-2xl font-bold mb-2">Publish a Creation</h2>
-        <p class="text-slate-400 text-sm mb-6">Your project config specs will update to the global live pipeline matrix directly.</p>
+    <div class="max-w-2xl mx-auto my-12 p-8 bg-slate-950 border border-slate-800 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-bold mb-2 text-slate-100">Publish a Creation</h2>
+        <p class="text-slate-400 text-sm mb-6">Your project specifications will update directly to the shared global network stream matrix. Please ensure external links point to safe platforms like GitHub.</p>
 
         <form id="uploadForm" class="space-y-5">
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Project Title</label>
-                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+                <input type="text" id="title" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="e.g. Cyberpunk Interface Asset Pack">
             </div>
 
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Category</label>
-                <select id="category" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+                <select id="category" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition cursor-pointer">
                     <option value="Game">🎮 Game Build</option>
                     <option value="Roblox Tools">🛠️ Roblox Extension/Tool</option>
                     <option value="Websites / Apps">🌐 Web App / Script</option>
-                    <option value="Scripts & Utilities">📦 Other Asset</option>
+                    <option value="Scripts & Utilities">📦 Scripts & Utilities</option>
                 </select>
             </div>
 
             <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">Project Summary</label>
-                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500"></textarea>
+                <label class="block text-sm font-bold mb-2 text-slate-300">Project Summary & Description</label>
+                <textarea id="description" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="Explain what your project configuration does, its setup instructions, or how others can deploy it..."></textarea>
             </div>
 
             <div>
                 <label class="block text-sm font-bold mb-2 text-slate-300">Thumbnail Image URL</label>
-                <input type="url" id="thumbnail" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500" placeholder="https://picsum.photos/400/300">
+                <input type="url" id="thumbnail" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="https://picsum.photos/400/300">
+                <span class="text-xs text-slate-500 mt-1 block">Leave empty or use any image link from imgur/unsplash to display project artwork cards.</span>
             </div>
 
             <div>
-                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link</label>
-                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 focus:outline-none focus:border-sky-500">
+                <label class="block text-sm font-bold mb-2 text-slate-300">External Project/Source Link (Verifiable URL)</label>
+                <input type="url" id="projectLink" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-2.5 text-slate-200 focus:outline-none focus:border-sky-500 transition" placeholder="https://github.com/yourusername/yourproject">
             </div>
 
-            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-3 rounded-lg transition duration-200">Publish to Hive Feed</button>
+            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold py-3 rounded-lg transition duration-200 cursor-pointer shadow-md">Publish to Hive Feed</button>
         </form>
     </div>
 
     <script>
+        // Shared public data vector endpoint target stream link
         const GLOBAL_BIN_URL = "https://kvstorage.com/api/v1/vectors/devhive_global_feed";
 
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Extract the user identity stored during localized session check
             let currentCreator = localStorage.getItem('devHiveUser') || "@guest_creator";
 
+            // Fallback default placeholder thumbnail image array if input box was skipped
+            const inputThumbnail = document.getElementById('thumbnail').value.trim();
+            const fallbackThumbnail = inputThumbnail || "https://picsum.photos/400/300";
+
+            // Compile clean data structure matrix object
             const newProject = {
-                title: document.getElementById('title').value,
+                title: document.getElementById('title').value.trim(),
                 category: document.getElementById('category').value,
-                description: document.getElementById('description').value,
-                thumbnail: document.getElementById('thumbnail').value || "https://picsum.photos/400/300",
-                project_link: document.getElementById('projectLink').value,
+                description: document.getElementById('description').value.trim(),
+                thumbnail: fallbackThumbnail,
+                project_link: document.getElementById('projectLink').value.trim(),
                 username: currentCreator
             };
 
             let currentFeed = [];
+
+            // 1. Fetch current global feed snapshot cluster from the cloud storage link
             try {
                 const res = await fetch(GLOBAL_BIN_URL);
                 if (res.ok) {
@@ -77,11 +87,13 @@
                     currentFeed = data.value || [];
                 }
             } catch(err) {
-                console.log("Creating new stream cluster context.");
+                console.log("No remote database array discovered. Initializing fresh feed stream.");
             }
 
+            // 2. Unshift the compiled structural project object straight into the top slot
             currentFeed.unshift(newProject);
 
+            // 3. Post updated project sheet array block back up onto the web endpoint matrix
             try {
                 const saveRes = await fetch(GLOBAL_BIN_URL, {
                     method: "POST",
@@ -90,13 +102,13 @@
                 });
                 
                 if (saveRes.ok) {
-                    alert("Global Upload Success! Your project is live for everyone.");
-                    window.location.href = 'index.html';
+                    alert("Global Upload Success! Your project is now completely live across the Dev-Hive cluster network.");
+                    window.location.href = 'index.html'; // Redirect to home feed window smoothly
                 } else {
-                    alert("Cloud storage connection rejected.");
+                    alert("Cloud sync transaction rejected. Remote node pipeline block.");
                 }
             } catch (error) {
-                alert("Network error updating live stream dashboard layout.");
+                alert("Network communication timeout error executing global dashboard write updates.");
             }
         });
     </script>
